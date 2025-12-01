@@ -4,6 +4,8 @@ const app = express()
 const userModel = require("./models/User")
 const bcrypt = require("bcryptjs")
 const session = require("express-session")
+const { isAuthenticated, checkRole } = require("./middlewares/auth")
+const { deptModel } = require("./models/Department")
 
 
 app.set("view engine","ejs")
@@ -17,7 +19,7 @@ app.use(session({
     saveUninitialized : false,
     rolling:true,
     cookie:{
-        maxAge : 60 * 1000 * 5 
+        maxAge : 1000 * 30 
     }
 }))
 
@@ -45,14 +47,36 @@ app.post("/login",async(req,res)=>{
     if(!validUser){
         res.status(400).json({message:"Incorrect Password"})
     }
-    res.redirect("/admin/dashboard")
+    else{
+        req.session.user = user
+        res.redirect("/admin/dashboard")
+    } 
 })
 //admin dashboard route 
 
-app.get("/admin/dashboard",(req,res)=>{
+app.get("/admin/dashboard",isAuthenticated,checkRole("admin"),(req,res)=>{
     res.render("dashboard")
 })
 
+app.get("/create-department",isAuthenticated,checkRole("admin"),(req,res)=>{
+    res.render("create-department")
+})
+
+app.post("/create-department",isAuthenticated,checkRole("admin"),async (req,res)=>{
+    const {name,type,address} = req.body
+    if(!name && !type && !address){
+        res.status(400).json({message:"Fill all the fields"})
+    }
+    //department
+    const newDept =await deptModel.create({
+        name:name,
+        type:type,
+        address:address
+    })
+
+    await newDept.save()
+
+})
 
 
 
