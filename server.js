@@ -85,17 +85,28 @@ app.post("/create-department",isAuthenticated,checkRole("admin"),async (req,res)
     res.redirect("/admin/dashboard")
 })
 
-app.get("/departments",(req,res)=>{
-    res.render("departments",{
-    departments: [
-        { name: "Civil Engineering", type: "Engineering", userCount: 85 },
-        { name: "Electrical Engineering", type: "Engineering", userCount: 92 },
-        { name: "Mechanical Engineering", type: "Engineering", userCount: 78 },
-        { name: "Computer Science", type: "Engineering", userCount: 120 },
-        { name: "Physics", type: "Science", userCount: 65 },
-        { name: "Chemistry", type: "Science", userCount: 58 }
-    ]
-})
+app.get("/departments",async(req,res)=>{
+    let departments ={}
+    //name type UserCount 
+    departments = await deptModel.aggregate([
+        //stage 1 
+        {$lookup:{
+            from : "uaasusers",
+            localField: "_id",
+            foreignField : "department",
+            as : "users"
+        }},
+        //stage 2
+        {$project:{
+            name : 1,
+            type : 1,
+            address : 1,
+            userCount : {$size : "$users"}
+        }}
+    ])
+
+    console.log(departments)
+    res.render("departments",{departments})
 })
 
 app.listen(3007,(req,res)=>{

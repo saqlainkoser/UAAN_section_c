@@ -21,8 +21,9 @@
             margin-bottom: 20px;
         }
 
-        .filters {
+        form.filters {
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             margin-bottom: 25px;
             gap: 20px;
@@ -87,20 +88,17 @@
 
     <h1>All Departments</h1>
 
-    <div class="filters">
-        <div style="flex: 2;">
-            <label>Search</label>
-            <input type="text" placeholder="Search by department name">
-        </div>
-
-        <div style="flex: 1;">
-            <label>Filter by Type</label>
-            <select>
-                <option>All</option>
-                <option>Engineering</option>
-                <option>Science</option>
+    <div >
+       <form action="/department" method="get" class="filters">
+            <input type="text" name="search" placeholder="Search Deapartment By Name">
+            <select name="type" >
+                <option value="all">ALL</option>
+                <option value="UG">UG</option>
+                <option value="PG">PG</option>
+                <option value="Research">Research</option>
             </select>
-        </div>
+            <button type="submit">Apply</button>
+       </form>
     </div>
 
     <div class="table-container">
