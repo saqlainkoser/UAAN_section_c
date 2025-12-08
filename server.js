@@ -6,10 +6,11 @@ const bcrypt = require("bcryptjs")
 const session = require("express-session")
 const { isAuthenticated, checkRole } = require("./middlewares/auth")
 const { deptModel } = require("./models/Department")
-
+const cookieParser = require("cookie-parser")
 
 app.set("view engine","ejs")
 app.use(express.urlencoded({extended:true}))
+app.use(cookieParser())
 
 //session creating
 app.use(session({
@@ -55,7 +56,12 @@ app.post("/login",async(req,res)=>{
 //admin dashboard route 
 
 app.get("/admin/dashboard",isAuthenticated,checkRole("admin"),(req,res)=>{
-    res.render("dashboard")
+    let message = ""
+    if(req.cookies.flashmsg){
+        message = req.cookies.flashmsg
+        res.cookie("flashmsg","")
+    }
+    res.render("dashboard",{message})
 })
 
 app.get("/create-department",isAuthenticated,checkRole("admin"),(req,res)=>{
@@ -75,11 +81,23 @@ app.post("/create-department",isAuthenticated,checkRole("admin"),async (req,res)
     })
 
     await newDept.save()
-
+    res.cookie("flashmsg","Department Created")
+    res.redirect("/admin/dashboard")
 })
 
+app.get("/departments",(req,res)=>{
+    res.render("departments",{
+    departments: [
+        { name: "Civil Engineering", type: "Engineering", userCount: 85 },
+        { name: "Electrical Engineering", type: "Engineering", userCount: 92 },
+        { name: "Mechanical Engineering", type: "Engineering", userCount: 78 },
+        { name: "Computer Science", type: "Engineering", userCount: 120 },
+        { name: "Physics", type: "Science", userCount: 65 },
+        { name: "Chemistry", type: "Science", userCount: 58 }
+    ]
+})
+})
 
-
-app.listen(3001,(req,res)=>{
-    console.log("Server is running on http://localhost:3001/login");
+app.listen(3007,(req,res)=>{
+    console.log("Server is running on http://localhost:3007/login");
 })

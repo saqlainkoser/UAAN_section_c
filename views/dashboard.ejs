@@ -106,7 +106,7 @@
     <div class="sidebar">
         <h3>Navigation</h3>
 
-        <button class="nav-btn">Departments</button>
+        <button class="nav-btn"><a href="/departments">Departments</a></button>
         <button class="nav-btn">Users</button>
         <button class="nav-btn">Add User</button>
         <button class="nav-btn"><a href="/create-department">Add Department</a></button>
@@ -144,6 +144,10 @@
     </div>
 
 </div>
+
+<%if(message.length){%>
+<p style="color:green"><%=message%></p>
+<%}%>
 
 </body>
 </html>

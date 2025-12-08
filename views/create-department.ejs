@@ -1,103 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Department</title>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #4b6cb7, #182848);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card {
-            width: 380px;
-            padding: 35px;
-            background: #ffffff15;
-            border-radius: 18px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            text-align: center;
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 26px;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border-radius: 10px;
-            font-size: 15px;
-            border: none;
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .input:focus {
-            background: white;
-            box-shadow: 0 0 0 2px #4b6cb7;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 15px;
-            padding: 14px;
-            background: #4b6cb7;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #3a56a3;
-        }
-
-        .success {
-            color: #c4ffa8;
-            margin-bottom: 10px;
-        }
-    </style>
+    <title>Document</title>
 </head>
+
 <body>
-
-    <div class="card">
-        <h1>Create Department</h1>
-
-        <% if (typeof success !== "undefined") { %>
-            <p class="success"><%= success %></p>
-        <% } %>
-
-        <form action="/create-department" method="post">
-            <input type="text" name="name" id="name" class="input" placeholder="Department Name" required>
-            <input type="text" name="type" id="type" class="input" placeholder="Department Type" required>
-            <input type="text" name="address" id="address" class="input" placeholder="Address" required>
-
-            <button type="submit">Create</button>
-        </form>
-    </div>
-
+    <h1>Create Deapartment</h1>
+    <form action="/create-department" method="post">
+        <input type="text" name="name" placeholder="Dept Name">
+        <select name="type">
+            <option value="UG">UG</option>
+            <option value="PG">PG</option>
+            <option value="Research">Research</option>
+        </select>
+        <input type="text" name="address" placeholder="Address">
+        <button>Create Department</button>
+    </form>
 </body>
+
 </html>
