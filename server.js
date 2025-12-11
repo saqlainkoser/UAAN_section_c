@@ -88,15 +88,32 @@ app.post("/create-department",isAuthenticated,checkRole("admin"),async (req,res)
 app.get("/departments",async(req,res)=>{
     let departments ={}
     //name type UserCount 
+    const matchStage = {}
+    
+    const search = req.query.search || ""
+    const type = req.query.type || "all" 
+
+    
+    if(search.trim()!==""){
+        matchStage.name = {$regex:search.trim(),$options:"i"} // i for case insensetive
+    }
+    if(type !== "all"){
+        matchStage.type = type
+    }
+
     departments = await deptModel.aggregate([
-        //stage 1 
+        //filter stage , stage 1
+        {
+            $match :matchStage
+        },
+        //stage 2 
         {$lookup:{
             from : "uaasusers",
             localField: "_id",
             foreignField : "department",
             as : "users"
         }},
-        //stage 2
+        //stage 3
         {$project:{
             name : 1,
             type : 1,
@@ -105,10 +122,14 @@ app.get("/departments",async(req,res)=>{
         }}
     ])
 
-    console.log(departments)
-    res.render("departments",{departments})
+    // console.log(departments)
+    res.render("departments",{departments,search,type})
+    // res.json(departments)
 })
 
+
+
+
 app.listen(3007,(req,res)=>{
-    console.log("Server is running on http://localhost:3007/login");
+    console.log("Server is running on http://localhost:3007/departments");
 })

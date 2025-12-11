@@ -89,13 +89,13 @@
     <h1>All Departments</h1>
 
     <div >
-       <form action="/department" method="get" class="filters">
-            <input type="text" name="search" placeholder="Search Deapartment By Name">
+       <form action="/departments" method="get" class="filters">
+            <input type="text" name="search" value="<%=search%>" placeholder="Search Deapartment By Name">
             <select name="type" >
-                <option value="all">ALL</option>
-                <option value="UG">UG</option>
-                <option value="PG">PG</option>
-                <option value="Research">Research</option>
+                <option value="all" <%=type == "all" ? "selected" :  ""  %> >ALL</option>
+                <option value="UG" <%=type == "UG" ? "selected" :  ""  %> >UG</option>
+                <option value="PG" <%=type == "PG" ? "selected" :  ""  %> >PG</option>
+                <option value="Research" <%=type == "Research" ? "selected" :  ""  %>>Research</option>
             </select>
             <button type="submit">Apply</button>
        </form>
